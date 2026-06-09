@@ -39,9 +39,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false)
       return
     }
+
+    let cancelled = false
+    const safetyTimeout = window.setTimeout(() => {
+      if (!cancelled) {
+        clearToken()
+        setUser(null)
+        setIsLoading(false)
+      }
+    }, 20_000)
+
     refreshUser()
-      .catch(() => clearToken())
-      .finally(() => setIsLoading(false))
+      .catch(() => {
+        clearToken()
+        setUser(null)
+      })
+      .finally(() => {
+        cancelled = true
+        window.clearTimeout(safetyTimeout)
+        setIsLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+      window.clearTimeout(safetyTimeout)
+    }
   }, [refreshUser])
 
   const login = useCallback(async (data: LoginRequest) => {

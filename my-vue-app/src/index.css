@@ -109,6 +109,7 @@ body {
 }
 
 .backface-hidden {
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 

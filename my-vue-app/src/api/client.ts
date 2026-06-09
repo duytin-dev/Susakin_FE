@@ -25,6 +25,8 @@ export class ApiError extends Error {
   }
 }
 
+const REQUEST_TIMEOUT_MS = 30_000
+
 async function request<T>(
   path: string,
   options: RequestInit = {},
@@ -39,8 +41,31 @@ async function request<T>(
     ;(headers as Record<string, string>)['Authorization'] = `Bearer ${token}`
   }
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers })
-  const json: ApiResponse<T> = await res.json()
+  const controller = new AbortController()
+  const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  let res: Response
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+    })
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      throw new ApiError('Server không phản hồi. Thử lại sau vài giây.', 408)
+    }
+    throw new ApiError('Không kết nối được server. Kiểm tra mạng hoặc backend.', 0)
+  } finally {
+    window.clearTimeout(timeoutId)
+  }
+
+  let json: ApiResponse<T>
+  try {
+    json = await res.json()
+  } catch {
+    throw new ApiError('Phản hồi không hợp lệ từ server', res.status)
+  }
 
   if (!res.ok || !json.success) {
     throw new ApiError(json.message || 'Đã xảy ra lỗi', res.status)

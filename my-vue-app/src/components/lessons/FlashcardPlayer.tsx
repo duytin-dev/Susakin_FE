@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, RotateCcw, Volume2 } from 'lucide-react'
 import type { Vocabulary } from '../../types'
+import { speakEnglish } from '../../utils/speech'
 import { Button } from '../ui/Button'
-import { Card } from '../ui/Card'
 
 interface FlashcardPlayerProps {
   vocabularies: Vocabulary[]
   onComplete: (score: number) => void
 }
+
+const faceClass =
+  'absolute inset-0 flex flex-col items-center justify-center rounded-3xl shadow-xl backface-hidden px-4'
 
 export function FlashcardPlayer({ vocabularies, onComplete }: FlashcardPlayerProps) {
   const [index, setIndex] = useState(0)
@@ -31,14 +34,7 @@ export function FlashcardPlayer({ vocabularies, onComplete }: FlashcardPlayerPro
     setIndex(index + 1)
   }
 
-  const speak = () => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(current.word)
-      utterance.lang = 'en-US'
-      utterance.rate = 0.8
-      speechSynthesis.speak(utterance)
-    }
-  }
+  if (!current) return null
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -59,32 +55,43 @@ export function FlashcardPlayer({ vocabularies, onComplete }: FlashcardPlayerPro
       </div>
 
       <div
-        className="perspective-1000 cursor-pointer"
-        onClick={() => setFlipped(!flipped)}
+        className="perspective-1000 cursor-pointer select-none"
+        onClick={() => setFlipped((f) => !f)}
       >
         <div
-          className={`relative w-full h-52 sm:h-64 md:h-72 preserve-3d transition-transform duration-500 ${flipped ? 'rotate-y-180' : ''}`}
-          style={{ transformStyle: 'preserve-3d', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+          className="relative w-full h-52 sm:h-64 md:h-72 preserve-3d transition-transform duration-500"
+          style={{ transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
         >
-          <Card className="absolute inset-0 flex flex-col items-center justify-center backface-hidden bg-gradient-to-br from-brand-500 to-purple-600 text-white border-0 px-4">
+          <div
+            className={`${faceClass} bg-gradient-to-br from-brand-500 to-purple-600 text-white`}
+            style={{ transform: 'rotateY(0deg)' }}
+          >
             <button
-              onClick={(e) => { e.stopPropagation(); speak() }}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                void speakEnglish(current.word)
+              }}
               className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors touch-manipulation"
               aria-label="Phát âm"
             >
               <Volume2 className="w-5 h-5" />
             </button>
-            <p className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 text-center break-words">{current.word}</p>
-            <p className="text-white/70 text-xs sm:text-sm font-medium">Nhấn để xem nghĩa</p>
-          </Card>
+            <p className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 text-center break-words">
+              {current.word}
+            </p>
+            <p className="text-white/80 text-xs sm:text-sm font-medium">Nhấn để xem nghĩa</p>
+          </div>
 
-          <Card
-            className="absolute inset-0 flex flex-col items-center justify-center backface-hidden bg-gradient-to-br from-mint-400 to-emerald-500 text-white border-0 px-4"
+          <div
+            className={`${faceClass} bg-gradient-to-br from-mint-400 to-emerald-500 text-white`}
             style={{ transform: 'rotateY(180deg)' }}
           >
-            <p className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 text-center break-words">{current.meaningVi}</p>
-            <p className="text-white/70 text-base sm:text-lg">{current.word}</p>
-          </Card>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 text-center break-words">
+              {current.meaningVi}
+            </p>
+            <p className="text-white/80 text-base sm:text-lg">{current.word}</p>
+          </div>
         </div>
       </div>
 
