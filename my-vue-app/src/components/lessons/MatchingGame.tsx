@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import type { Vocabulary } from '../../types'
+import { shuffle } from '../../utils/vocabulary'
+import { playMatchSuccess, playMatchWrong } from '../../utils/gameSounds'
 
 interface MatchingGameProps {
   vocabularies: Vocabulary[]
@@ -12,8 +14,6 @@ interface MatchItem {
   pairId: number
   type: 'en' | 'vi'
 }
-
-import { shuffle } from '../../utils/vocabulary'
 
 export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
   const items = useMemo<MatchItem[]>(() => {
@@ -28,9 +28,12 @@ export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
   const totalPairs = items.length / 2
   const [selected, setSelected] = useState<MatchItem | null>(null)
   const [matched, setMatched] = useState<Set<number>>(new Set())
-  const [wrong, setWrong] = useState<string | null>(null)
+  const [wrongIds, setWrongIds] = useState<Set<string>>(new Set())
+  const [locked, setLocked] = useState(false)
   const [attempts, setAttempts] = useState(0)
   const completedRef = useRef(false)
+
+  const visibleItems = items.filter((item) => !matched.has(item.pairId))
 
   const finish = useCallback(
     (finalAttempts: number) => {
@@ -47,7 +50,7 @@ export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
 
   const handleSelect = useCallback(
     (item: MatchItem) => {
-      if (matched.has(item.pairId) || wrong) return
+      if (matched.has(item.pairId) || locked) return
 
       if (!selected) {
         setSelected(item)
@@ -61,25 +64,32 @@ export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
 
       const newAttempts = attempts + 1
       setAttempts(newAttempts)
+      setLocked(true)
 
       if (selected.pairId === item.pairId && selected.type !== item.type) {
+        playMatchSuccess()
+        setWrongIds(new Set())
+
         const newMatched = new Set(matched)
         newMatched.add(item.pairId)
         setMatched(newMatched)
         setSelected(null)
+        setLocked(false)
 
         if (newMatched.size >= totalPairs) {
           finish(newAttempts)
         }
       } else {
-        setWrong(item.id)
+        playMatchWrong()
+        setWrongIds(new Set([selected.id, item.id]))
         setTimeout(() => {
-          setWrong(null)
+          setWrongIds(new Set())
           setSelected(null)
-        }, 800)
+          setLocked(false)
+        }, 700)
       }
     },
-    [selected, matched, wrong, attempts, totalPairs, finish],
+    [selected, matched, locked, attempts, totalPairs, finish],
   )
 
   return (
@@ -94,24 +104,22 @@ export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
-        {items.map((item) => {
-          const isMatched = matched.has(item.pairId)
+        {visibleItems.map((item) => {
           const isSelected = selected?.id === item.id
-          const isWrong = wrong === item.id || (wrong && selected?.id === item.id)
+          const isWrong = wrongIds.has(item.id)
 
           return (
             <button
               key={item.id}
+              type="button"
               onClick={() => handleSelect(item)}
-              disabled={isMatched}
-              className={`p-3 sm:p-4 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-200 border-2 min-h-[3.5rem] sm:min-h-[4rem] break-words touch-manipulation ${
-                isMatched
-                  ? 'bg-mint-400/20 border-mint-400 text-emerald-700 opacity-60'
-                  : isWrong
-                    ? 'bg-coral-500/20 border-coral-400 text-coral-700 animate-pulse'
-                    : isSelected
-                      ? 'bg-brand-500 border-brand-600 text-white scale-105 shadow-lg'
-                      : 'bg-white border-brand-200 text-brand-800 hover:border-brand-400 hover:shadow-md'
+              disabled={locked && !isSelected && !isWrong}
+              className={`p-3 sm:p-4 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-300 border-2 min-h-[3.5rem] sm:min-h-[4rem] break-words touch-manipulation ${
+                isWrong
+                  ? 'bg-coral-500/25 border-coral-500 text-coral-800 animate-pulse'
+                  : isSelected
+                    ? 'bg-brand-500 border-brand-600 text-white scale-105 shadow-lg'
+                    : 'bg-white border-brand-200 text-brand-800 hover:border-brand-400 hover:shadow-md'
               }`}
             >
               {item.text}
