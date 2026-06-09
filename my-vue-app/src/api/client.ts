@@ -1,5 +1,6 @@
 import type { ApiResponse } from '../types'
 
+const API_BASE = import.meta.env.VITE_API_URL ?? ''
 const TOKEN_KEY = 'susakin_token'
 
 export function getToken(): string | null {
@@ -38,7 +39,7 @@ async function request<T>(
     ;(headers as Record<string, string>)['Authorization'] = `Bearer ${token}`
   }
 
-  const res = await fetch(path, { ...options, headers })
+  const res = await fetch(`${API_BASE}${path}`, { ...options, headers })
   const json: ApiResponse<T> = await res.json()
 
   if (!res.ok || !json.success) {
