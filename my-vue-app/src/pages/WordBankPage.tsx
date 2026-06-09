@@ -56,10 +56,10 @@ export function WordBankPage() {
   }
 
   return (
-    <div className="space-y-6 animate-slide-up">
+    <div className="space-y-5 sm:space-y-6 animate-slide-up">
       <div>
-        <h2 className="text-2xl font-black text-brand-800">Sổ từ vựng của tôi</h2>
-        <p className="text-gray-500 font-medium">
+        <h2 className="text-xl sm:text-2xl font-black text-brand-800">Sổ từ vựng của tôi</h2>
+        <p className="text-gray-500 font-medium text-sm sm:text-base">
           Ôn lại các từ bạn đã lưu
         </p>
       </div>
@@ -69,7 +69,7 @@ export function WordBankPage() {
           <button
             key={value}
             onClick={() => setFilter(value)}
-            className={`px-4 py-2 rounded-2xl font-bold text-sm transition-all ${
+            className={`px-3 sm:px-4 py-2 rounded-2xl font-bold text-xs sm:text-sm transition-all touch-manipulation ${
               filter === value
                 ? 'bg-brand-600 text-white shadow-lg'
                 : 'bg-white text-brand-600 border-2 border-brand-100 hover:border-brand-300'
@@ -97,26 +97,28 @@ export function WordBankPage() {
       ) : (
         <div className="space-y-3">
           {vocabularies.map((vocab) => (
-            <Card key={vocab.id} padding="sm" className="flex items-center gap-4">
+            <Card key={vocab.id} padding="sm" className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              <div className="flex items-start gap-3 min-w-0 flex-1">
               <button
                 onClick={() => speak(vocab.word)}
-                className="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center shrink-0 hover:bg-brand-200 transition-colors"
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-brand-100 flex items-center justify-center shrink-0 hover:bg-brand-200 transition-colors touch-manipulation"
               >
                 <Volume2 className="w-5 h-5 text-brand-600" />
               </button>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <p className="font-black text-brand-800 text-lg">{vocab.word}</p>
+                  <p className="font-black text-brand-800 text-base sm:text-lg break-words">{vocab.word}</p>
                   <Badge variant={statusBadge[vocab.status]}>
                     {getVocabStatusLabel(vocab.status)}
                   </Badge>
                 </div>
                 <p className="text-gray-500">{vocab.meaningVi}</p>
-                <p className="text-xs text-brand-400 font-medium">{vocab.topicName}</p>
+                <p className="text-xs text-brand-400 font-medium truncate">{vocab.topicName}</p>
+              </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
                 {vocab.status !== 'MASTERED' && (
                   <button
                     onClick={() =>
@@ -125,7 +127,7 @@ export function WordBankPage() {
                         status: nextStatus[vocab.status],
                       })
                     }
-                    className="px-3 py-1.5 rounded-xl bg-mint-400/20 text-emerald-700 text-xs font-bold hover:bg-mint-400/30 transition-colors"
+                    className="px-3 py-2 rounded-xl bg-mint-400/20 text-emerald-700 text-xs font-bold hover:bg-mint-400/30 transition-colors touch-manipulation"
                   >
                     {vocab.status === 'NEW' ? 'Bắt đầu học' : 'Đã thuộc'}
                   </button>

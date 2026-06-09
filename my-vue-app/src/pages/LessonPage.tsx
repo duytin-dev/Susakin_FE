@@ -78,10 +78,10 @@ export function LessonPage() {
   if (finished) {
     const emoji = score >= 80 ? '🏆' : score >= 50 ? '👍' : '💪'
     return (
-      <div className="max-w-lg mx-auto text-center space-y-6 animate-bounce-in">
+      <div className="max-w-lg mx-auto text-center space-y-5 sm:space-y-6 animate-bounce-in px-1">
         <Card padding="lg" className="bg-gradient-to-br from-brand-50 to-purple-50">
-          <div className="text-7xl mb-4">{emoji}</div>
-          <h2 className="text-3xl font-black text-brand-800 mb-2">Hoàn thành!</h2>
+          <div className="text-5xl sm:text-7xl mb-4">{emoji}</div>
+          <h2 className="text-2xl sm:text-3xl font-black text-brand-800 mb-2">Hoàn thành!</h2>
           <p className="text-gray-500 mb-4">{lesson.title}</p>
           <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-2xl shadow-md">
             <Trophy className="w-6 h-6 text-sunny-500" />
@@ -89,11 +89,11 @@ export function LessonPage() {
             <span className="text-gray-500 font-semibold">điểm</span>
           </div>
         </Card>
-        <div className="flex gap-3 justify-center">
-          <Link to={`/topics/${lesson.topicId}`}>
-            <Button variant="secondary">Về chủ đề</Button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link to={`/topics/${lesson.topicId}`} className="w-full sm:w-auto">
+            <Button variant="secondary" className="w-full sm:w-auto">Về chủ đề</Button>
           </Link>
-          <Button onClick={() => {
+          <Button className="w-full sm:w-auto" onClick={() => {
             setFinished(false)
             setScore(0)
             setSessionKey((k) => k + 1)
@@ -106,7 +106,7 @@ export function LessonPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-slide-up">
+    <div className="max-w-2xl mx-auto space-y-5 sm:space-y-6 animate-slide-up">
       <Link
         to={`/topics/${lesson.topicId}`}
         className="inline-flex items-center gap-2 text-brand-600 font-semibold hover:text-brand-800"
@@ -117,7 +117,7 @@ export function LessonPage() {
 
       <Card className="text-center">
         <span className="text-3xl">{getLessonTypeEmoji(lesson.type)}</span>
-        <h2 className="text-2xl font-black text-brand-800 mt-2">{lesson.title}</h2>
+        <h2 className="text-xl sm:text-2xl font-black text-brand-800 mt-2 break-words">{lesson.title}</h2>
         <p className="text-gray-500 font-medium">
           {getLessonTypeLabel(lesson.type)} · {lesson.topicName}
           {(lesson.type === 'MATCHING' || lesson.type === 'QUIZ') && (

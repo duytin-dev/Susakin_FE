@@ -37,19 +37,19 @@ export function ProfilePage() {
   const completed = progress.filter((p) => p.status === 'COMPLETED')
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-slide-up">
+    <div className="max-w-2xl mx-auto space-y-5 sm:space-y-6 animate-slide-up">
       <div>
-        <h2 className="text-2xl font-black text-brand-800">Hồ sơ của tôi</h2>
-        <p className="text-gray-500 font-medium">Quản lý thông tin cá nhân</p>
+        <h2 className="text-xl sm:text-2xl font-black text-brand-800">Hồ sơ của tôi</h2>
+        <p className="text-gray-500 font-medium text-sm sm:text-base">Quản lý thông tin cá nhân</p>
       </div>
 
       <Card className="text-center bg-gradient-to-br from-brand-50 to-purple-50">
         <div className="w-20 h-20 rounded-full gradient-bg flex items-center justify-center mx-auto mb-4 shadow-lg">
           <User className="w-10 h-10 text-white" />
         </div>
-        <h3 className="text-2xl font-black text-brand-800">{user?.name}</h3>
-        <p className="text-gray-500 flex items-center justify-center gap-1 mt-1">
-          <Mail className="w-4 h-4" />
+        <h3 className="text-xl sm:text-2xl font-black text-brand-800 break-words px-2">{user?.name}</h3>
+        <p className="text-gray-500 flex items-center justify-center gap-1 mt-1 text-sm sm:text-base px-2 break-all">
+          <Mail className="w-4 h-4 shrink-0" />
           {user?.email}
         </p>
         <div className="mt-2">
@@ -68,13 +68,13 @@ export function ProfilePage() {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-semibold text-gray-700">Lớp</label>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-5 gap-1.5 sm:flex sm:gap-2">
               {[1, 2, 3, 4, 5].map((g) => (
                 <button
                   key={g}
                   type="button"
                   onClick={() => setGrade(g)}
-                  className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                  className={`flex-1 py-2.5 sm:py-2.5 rounded-xl font-bold text-sm transition-all touch-manipulation min-h-[44px] ${
                     grade === g
                       ? 'bg-brand-600 text-white shadow-lg'
                       : 'bg-gray-100 text-gray-600 hover:bg-brand-50'

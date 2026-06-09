@@ -35,13 +35,13 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
+    <div className="min-h-screen min-h-[100dvh] gradient-bg flex items-center justify-center p-3 sm:p-4 pt-safe pb-safe">
       <div className="w-full max-w-md animate-slide-up">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white/20 backdrop-blur mb-4">
-            <Sparkles className="w-10 h-10 text-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/20 backdrop-blur mb-4">
+            <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-black text-white">Tạo tài khoản</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white">Tạo tài khoản</h1>
         </div>
 
         <Card padding="lg">
@@ -76,13 +76,13 @@ export function RegisterPage() {
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-semibold text-gray-700">Lớp</label>
-              <div className="flex gap-2">
+              <div className="grid grid-cols-5 gap-1.5 sm:flex sm:gap-2">
                 {[1, 2, 3, 4, 5].map((g) => (
                   <button
                     key={g}
                     type="button"
                     onClick={() => setGrade(g)}
-                    className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                    className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all touch-manipulation min-h-[44px] ${
                       grade === g
                         ? 'bg-brand-600 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-600 hover:bg-brand-50'

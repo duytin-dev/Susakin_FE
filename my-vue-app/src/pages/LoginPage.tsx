@@ -35,17 +35,17 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-10 left-10 text-6xl animate-float opacity-30">📚</div>
-      <div className="absolute bottom-20 right-10 text-5xl animate-float opacity-30" style={{ animationDelay: '1s' }}>⭐</div>
-      <div className="absolute top-1/3 right-1/4 text-4xl animate-float opacity-20" style={{ animationDelay: '0.5s' }}>🎨</div>
+    <div className="min-h-screen min-h-[100dvh] gradient-bg flex items-center justify-center p-3 sm:p-4 relative overflow-hidden pt-safe pb-safe">
+      <div className="hidden sm:block absolute top-10 left-10 text-6xl animate-float opacity-30 pointer-events-none">📚</div>
+      <div className="hidden sm:block absolute bottom-20 right-10 text-5xl animate-float opacity-30 pointer-events-none" style={{ animationDelay: '1s' }}>⭐</div>
+      <div className="hidden md:block absolute top-1/3 right-1/4 text-4xl animate-float opacity-20 pointer-events-none" style={{ animationDelay: '0.5s' }}>🎨</div>
 
       <div className="w-full max-w-md relative z-10 animate-slide-up">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white/20 backdrop-blur mb-4 shadow-xl">
-            <Sparkles className="w-10 h-10 text-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/20 backdrop-blur mb-4 shadow-xl">
+            <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-black text-white mb-2">Susakin</h1>
+          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Susakin</h1>
           <p className="text-white/80 font-medium">Học tiếng Anh thật vui!</p>
         </div>
 

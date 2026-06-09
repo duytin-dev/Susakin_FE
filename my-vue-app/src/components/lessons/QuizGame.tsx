@@ -95,7 +95,7 @@ export function QuizGame({
         <p className="text-sm font-semibold text-brand-500 mb-2">
           Nghĩa của từ này là gì?
         </p>
-        <p className="text-4xl font-black text-brand-800">
+        <p className="text-2xl sm:text-3xl md:text-4xl font-black text-brand-800 break-words">
           {current.vocabulary.word}
         </p>
       </Card>
@@ -118,12 +118,12 @@ export function QuizGame({
               key={i}
               onClick={() => handleAnswer(i)}
               disabled={showResult}
-              className={`p-4 rounded-2xl border-2 font-semibold text-left transition-all duration-200 flex items-center gap-3 ${style}`}
+              className={`p-3 sm:p-4 rounded-2xl border-2 font-semibold text-left text-sm sm:text-base transition-all duration-200 flex items-center gap-2 sm:gap-3 touch-manipulation ${style}`}
             >
               <span className="w-8 h-8 rounded-xl bg-brand-100 flex items-center justify-center text-sm font-black text-brand-600 shrink-0">
                 {String.fromCharCode(65 + i)}
               </span>
-              {option}
+              <span className="flex-1 break-words">{option}</span>
               {showResult && i === current.correctIndex && (
                 <CheckCircle className="w-5 h-5 text-mint-500 ml-auto" />
               )}
@@ -145,7 +145,7 @@ export function QuizGame({
               Đáp án đúng: <strong>{current.vocabulary.meaningVi}</strong>
             </p>
           )}
-          <Button onClick={handleNext} size="lg">
+          <Button onClick={handleNext} size="lg" className="w-full sm:w-auto">
             {index + 1 >= questions.length ? 'Xem kết quả' : 'Câu tiếp theo'}
           </Button>
         </div>

@@ -63,26 +63,27 @@ export function FlashcardPlayer({ vocabularies, onComplete }: FlashcardPlayerPro
         onClick={() => setFlipped(!flipped)}
       >
         <div
-          className={`relative w-full h-72 preserve-3d transition-transform duration-500 ${flipped ? 'rotate-y-180' : ''}`}
+          className={`relative w-full h-52 sm:h-64 md:h-72 preserve-3d transition-transform duration-500 ${flipped ? 'rotate-y-180' : ''}`}
           style={{ transformStyle: 'preserve-3d', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
         >
-          <Card className="absolute inset-0 flex flex-col items-center justify-center backface-hidden bg-gradient-to-br from-brand-500 to-purple-600 text-white border-0">
+          <Card className="absolute inset-0 flex flex-col items-center justify-center backface-hidden bg-gradient-to-br from-brand-500 to-purple-600 text-white border-0 px-4">
             <button
               onClick={(e) => { e.stopPropagation(); speak() }}
-              className="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors touch-manipulation"
+              aria-label="Phát âm"
             >
               <Volume2 className="w-5 h-5" />
             </button>
-            <p className="text-5xl font-black mb-2">{current.word}</p>
-            <p className="text-white/70 text-sm font-medium">Nhấn để xem nghĩa</p>
+            <p className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 text-center break-words">{current.word}</p>
+            <p className="text-white/70 text-xs sm:text-sm font-medium">Nhấn để xem nghĩa</p>
           </Card>
 
           <Card
-            className="absolute inset-0 flex flex-col items-center justify-center backface-hidden bg-gradient-to-br from-mint-400 to-emerald-500 text-white border-0"
+            className="absolute inset-0 flex flex-col items-center justify-center backface-hidden bg-gradient-to-br from-mint-400 to-emerald-500 text-white border-0 px-4"
             style={{ transform: 'rotateY(180deg)' }}
           >
-            <p className="text-4xl font-black mb-2">{current.meaningVi}</p>
-            <p className="text-white/70 text-lg">{current.word}</p>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 text-center break-words">{current.meaningVi}</p>
+            <p className="text-white/70 text-base sm:text-lg">{current.word}</p>
           </Card>
         </div>
       </div>
@@ -92,12 +93,12 @@ export function FlashcardPlayer({ vocabularies, onComplete }: FlashcardPlayerPro
         <span className="text-sm font-medium">Nhấn thẻ để lật</span>
       </div>
 
-      <div className="flex gap-3 justify-center">
-        <Button variant="secondary" onClick={() => handleNext(false)}>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Button variant="secondary" className="w-full sm:w-auto" onClick={() => handleNext(false)}>
           <ChevronLeft className="w-4 h-4" />
           Chưa biết
         </Button>
-        <Button variant="success" onClick={() => handleNext(true)}>
+        <Button variant="success" className="w-full sm:w-auto" onClick={() => handleNext(true)}>
           Đã biết
           <ChevronRight className="w-4 h-4" />
         </Button>

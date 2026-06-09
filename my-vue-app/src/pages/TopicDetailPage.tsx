@@ -67,7 +67,7 @@ export function TopicDetailPage() {
   }
 
   return (
-    <div className="space-y-8 animate-slide-up">
+    <div className="space-y-6 sm:space-y-8 animate-slide-up">
       <Link
         to="/topics"
         className="inline-flex items-center gap-2 text-brand-600 font-semibold hover:text-brand-800 transition-colors"
@@ -77,12 +77,12 @@ export function TopicDetailPage() {
       </Link>
 
       {topic && (
-        <div className={`rounded-3xl bg-gradient-to-r ${getTopicGradient(topic.name)} p-8 text-white shadow-xl`}>
-          <div className="flex items-center gap-4">
-            <span className="text-5xl">{getTopicEmoji(topic.name)}</span>
-            <div>
-              <h2 className="text-3xl font-black">{topic.name}</h2>
-              <p className="text-white/80 font-medium">
+        <div className={`rounded-2xl sm:rounded-3xl bg-gradient-to-r ${getTopicGradient(topic.name)} p-5 sm:p-8 text-white shadow-xl`}>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <span className="text-4xl sm:text-5xl">{getTopicEmoji(topic.name)}</span>
+            <div className="min-w-0">
+              <h2 className="text-2xl sm:text-3xl font-black break-words">{topic.name}</h2>
+              <p className="text-white/80 font-medium text-sm sm:text-base">
                 {vocabularies.length} từ vựng · {lessons.length} bài học
               </p>
             </div>
@@ -91,19 +91,19 @@ export function TopicDetailPage() {
       )}
 
       <section>
-        <h3 className="text-xl font-black text-brand-800 mb-4 flex items-center gap-2">
+        <h3 className="text-lg sm:text-xl font-black text-brand-800 mb-4 flex items-center gap-2">
           <Play className="w-5 h-5" />
           Bài học
         </h3>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {lessons.map((lesson) => (
             <Link key={lesson.id} to={`/lessons/${lesson.id}`}>
-              <Card hover className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center text-2xl">
+              <Card hover className="flex items-center gap-3 sm:gap-4">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-brand-100 flex items-center justify-center text-xl sm:text-2xl shrink-0">
                   {getLessonTypeEmoji(lesson.type)}
                 </div>
-                <div>
-                  <p className="font-bold text-brand-800">{lesson.title}</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-brand-800 truncate">{lesson.title}</p>
                   <Badge variant="purple">{getLessonTypeLabel(lesson.type)}</Badge>
                 </div>
               </Card>
@@ -114,8 +114,8 @@ export function TopicDetailPage() {
 
       <section>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-          <h3 className="text-xl font-black text-brand-800">Từ vựng</h3>
-          <div className="relative max-w-xs w-full">
+          <h3 className="text-lg sm:text-xl font-black text-brand-800">Từ vựng</h3>
+          <div className="relative w-full sm:max-w-xs">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               value={keyword}
@@ -130,7 +130,7 @@ export function TopicDetailPage() {
           {vocabularies.length} từ vựng
         </p>
 
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {pagedVocabularies.map((vocab) => {
             const isSaved = savedIds.has(vocab.id)
             return (
@@ -143,7 +143,7 @@ export function TopicDetailPage() {
                     <Volume2 className="w-4 h-4 text-brand-600" />
                   </button>
                   <div className="min-w-0">
-                    <p className="font-black text-brand-800 text-lg">{vocab.word}</p>
+                    <p className="font-black text-brand-800 text-base sm:text-lg break-words">{vocab.word}</p>
                     <p className="text-gray-500 text-sm truncate">{vocab.meaningVi}</p>
                   </div>
                 </div>

@@ -93,7 +93,7 @@ export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3">
         {items.map((item) => {
           const isMatched = matched.has(item.pairId)
           const isSelected = selected?.id === item.id
@@ -104,7 +104,7 @@ export function MatchingGame({ vocabularies, onComplete }: MatchingGameProps) {
               key={item.id}
               onClick={() => handleSelect(item)}
               disabled={isMatched}
-              className={`p-4 rounded-2xl font-bold text-sm transition-all duration-200 border-2 ${
+              className={`p-3 sm:p-4 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-200 border-2 min-h-[3.5rem] sm:min-h-[4rem] break-words touch-manipulation ${
                 isMatched
                   ? 'bg-mint-400/20 border-mint-400 text-emerald-700 opacity-60'
                   : isWrong

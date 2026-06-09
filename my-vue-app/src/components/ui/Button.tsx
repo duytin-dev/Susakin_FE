@@ -22,9 +22,9 @@ const variants: Record<Variant, string> = {
 }
 
 const sizes: Record<Size, string> = {
-  sm: 'px-3 py-1.5 text-sm rounded-xl',
-  md: 'px-5 py-2.5 text-base rounded-2xl',
-  lg: 'px-8 py-3.5 text-lg rounded-2xl font-bold',
+  sm: 'px-3 py-2 text-sm rounded-xl min-h-[40px]',
+  md: 'px-5 py-2.5 text-base rounded-2xl min-h-[44px]',
+  lg: 'px-6 sm:px-8 py-3 sm:py-3.5 text-base sm:text-lg rounded-2xl font-bold min-h-[48px]',
 }
 
 export function Button({
@@ -38,7 +38,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 touch-manipulation ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={disabled || loading}
       {...props}
     >
